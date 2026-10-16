@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy 11th Anniversary</title>
+  <style>
+    /* ==========================================
+        1. Global Styles & Reset
+        ================================---------- */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at center, #000033, #080314, #000000);
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* ==========================================
+        2. Sky Background Container
+        ================================---------- */
+    .sky-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    /* ==========================================
+        3. Header Banner (Title Area)
+        ================================---------- */
+    .header-banner {
+      position: relative;
+      z-index: 10;
+      margin: 20px auto;
+      max-width: 90%;
+      width: 420px;
+      padding: 12px 20px;
+      background: rgba(43, 20, 75, 0.6);
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      border-radius: 25px;
+      text-align: center;
+      backdrop-filter: blur(8px);
+    }
+
+    .header-banner h1 {
+      font-size: 16px;
+      color: #FFCED8;
+      margin-bottom: 4px;
+    }
+
+    .header-banner p {
+      font-size: 12px;
+      color: #FFE8C4;
+    }
+
+    /* ==========================================
+        4. Floating Hearts & Animations
+        ================================---------- */
+    .star-item {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transform: translate(-50%, -50%);
+      transition: transform 0.2s;
+      animation: floatUp 12s linear infinite;
+    }
+
+    .star-item:hover {
+      transform: translate(-50%, -50%) scale(1.2);
+      animation-play-state: paused;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translate(-50%, 0px);
+      }
+      50% {
+        transform: translate(-50%, -15px);
+      }
+      100% {
+        transform: translate(-50%, 0px);
+      }
+    }
+
+    .star-icon {
+      font-size: 24px;
+      filter: drop-shadow(0 0 10px currentColor);
+    }
+
+    .star-label {
+      font-size: 11px;
+      color: #e0f2fe;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 2px 8px;
+      border-radius: 8px;
+      margin-top: 2px;
+      white-space: nowrap;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+    }
+
+    /* ==========================================
+        5. Bottom Action Bar & Buttons
+        ================================---------- */
+    .bottom-bar {
+      position: fixed;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-action {
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.5);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-action:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(56, 189, 248, 0.8);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, #4b5563, #1f2937);
+      box-shadow: 0 0 15px rgba(107, 114, 128, 0.4);
+    }
+
+    /* ==========================================
+        6. Modal Overlay & Popup Card Form / Table
+        ================================---------- */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.75);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      background: #180b2b;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: 20px;
+      padding: 24px;
+      width: 90%;
+      max-width: 380px;
+      position: relative;
+      box-shadow: 0 0 25px rgba(14, 165, 233, 0.3);
+    }
+
+    .modal-card.table-card {
+      max-width: 600px;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .table-container {
+      overflow-y: auto;
+      max-height: 60vh;
+      margin-top: 15px;
+      border-radius: 10px;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+    }
+
+    .btn-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #aaa;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .modal-title {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-title h2 {
+      font-size: 16px;
+      color: #fff;
+    }
+
+    .modal-title p {
+      font-size: 11px;
+      color: #7dd3fc;
+      margin-top: 4px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      color: #ddd;
+      margin-bottom: 6px;
+    }
+
+    .form-group input, .form-group textarea {
+      width: 100%;
+      background: #0f061d;
+      border: 1px solid #0369a1;
+      border-radius: 10px;
+      padding: 10px;
+      color: #fff;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .form-group input:focus, .form-group textarea:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 8px rgba(56, 189, 248, 0.3);
+    }
+
+    .form-group textarea {
+      height: 80px;
+      resize: none;
+    }
+
+    .color-options {
+      display: flex;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .color-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .color-btn.selected {
+      border-color: #fff;
+      box-shadow: 0 0 10px currentColor;
+      transform: scale(1.1);
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: linear-gradient(90deg, #0284c7, #38bdf8);
+      border: none;
+      color: white;
+      padding: 12px;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 10px;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+      transition: transform 0.2s;
+    }
+
+    .btn-submit:hover {
+      transform: scale(1.02);
+    }
+
+    /* Custom Table Styling */
+    .wish-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      text-align: left;
+    }
+
+    .wish-table th {
+      background: #0f061d;
+      color: #38bdf8;
+      padding: 10px;
+      position: sticky;
+      top: 0;
+      border-bottom: 1px solid rgba(56, 189, 248, 0.4);
+    }
+
+    .wish-table td {
+      padding: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      color: #ddd;
+      word-break: break-word;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- พื้นหลังท้องฟ้า -->
+  <div class="sky-container" id="sky"></div>
+
+  <!-- แบนเนอร์หัวข้อแสดงความยินดี -->
+  <div class="header-banner">
+    <h1>🎉 Happy 11th Anniversary, Song Weilong! 🎉</h1>
+    <p>🩵宋威龙出道11周年快乐🩵</p>
+  </div>
+
+  <!-- แถบปุ่มด้านล่าง (ส่งจดหมาย & ดูตาราง) -->
+  <div class="bottom-bar">
+    <button class="btn-action" id="openModalBtn">
+      <span>💌</span> ส่งจดหมาย
+    </button>
+    <button class="btn-action btn-secondary" id="openTableBtn">
+      <span>📋</span> ดูตารางคำอวยพร
+    </button>
+  </div>
+
+  <!-- Pop-up ฟอร์มกรอกข้อความคำอวยพร -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-card">
+      <button class="btn-close" id="closeModalBtn">✕</button>
+      
+      <div class="modal-title">
+        <h2>จดหมายรักถึงหลงหลง 📮💌</h2>
+        <p>Love letter to Longlong | 致龙龙的情书</p>
+      </div>
+
+      <form id="wishForm">
+        <div class="form-group">
+          <label>ชื่อ / Name / 姓名 *</label>
+          <input type="text" id="username" placeholder="ระบุชื่อหรือนามแฝง / Your Name" required>
+        </div>
+
+        <div class="form-group">
+          <label>คำอวยพร / Message / 祝福语 *</label>
+          <textarea id="message" placeholder="ระบุข้อความ..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>เลือกสีหัวใจ / Choose Heart Color *</label>
+          <div class="color-options">
+            <div class="color-btn selected" style="background-color: #9564DD;" data-color="#9564DD"></div>
+            <div class="color-btn" style="background-color: #DF301C;" data-color="#DF301C"></div>
+            <div class="color-btn" style="background-color: #FFFC8C;" data-color="#FFFC8C"></div>
+            <div class="color-btn" style="background-color: #FF84BA;" data-color="#FF84BA"></div>
+            <div class="color-btn" style="background-color: #76C457;" data-color="#76C457"></div>
+			<div class="color-btn" style="background-color: #DAA464;" data-color="#DAA464"></div>
+            <div class="color-btn" style="background-color: #6FD1D7;" data-color="#6FD1D7"></div>
+            <div class="color-btn" style="background-color: #FFFFFF;" data-color="#FFFFFF"></div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit">💌 ส่งความรัก / Deliver some love</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Pop-up แสดงตารางข้อมูลคำอวยพร -->
+  <div class="modal-overlay" id="tableModalOverlay">
+    <div class="modal-card table-card">
+      <button class="btn-close" id="closeTableModalBtn">✕</button>
+      <div class="modal-title">
+        <h2>📋 รายชื่อคำอวยพรทั้งหมด</h2>
+        <p>All Wishes Table</p>
+      </div>
+      <div class="table-container">
+        <table class="wish-table">
+          <thead>
+            <tr>
+              <th style="width: 25%;">ชื่อผู้ส่ง</th>
+              <th style="width: 60%;">ข้อความอวยพร</th>
+              <th style="width: 15%; text-align: center;">สี</th>
+            </tr>
+          </thead>
+          <tbody id="wishesTableBody">
+            <!-- ข้อมูลจะถูกโหลดใส่ที่นี่อัตโนมัติ -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- นำเข้า Firebase SDK และโค้ดระบบ -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // TODO: แทนที่ค่าเหล่านี้ด้วย Firebase Config ของคุณเอง
+    const firebaseConfig = {
+apiKey: "AIzaSyCohLI4kdGLvmHHACu9dEsSzPAuWQkFFlE",
+  authDomain: "song-weilong-11th.firebaseapp.com",
+  projectId: "song-weilong-11th",
+  storageBucket: "song-weilong-11th.firebasestorage.app",
+  messagingSenderId: "944025483865",
+  appId: "1:944025483865:web:84f3980fcfaf3354620f48",
+  measurementId: "G-98Q2Z5CVWQ"
+
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const modalOverlay = document.getElementById('modalOverlay');
+    const openModalBtn = document.getElementById('openModalBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    
+    const tableModalOverlay = document.getElementById('tableModalOverlay');
+    const openTableBtn = document.getElementById('openTableBtn');
+    const closeTableModalBtn = document.getElementById('closeTableModalBtn');
+    const wishesTableBody = document.getElementById('wishesTableBody');
+
+    const wishForm = document.getElementById('wishForm');
+    const sky = document.getElementById('sky');
+    const colorBtns = document.querySelectorAll('.color-btn');
+
+    let selectedColor = '#38bdf8'; 
+
+    // สร้าง Element หัวใจลอยบนฟ้า
+    function createStarElement(name, message, color, top, left) {
+      const star = document.createElement('div');
+      star.className = 'star-item';
+      star.style.top = top;
+      star.style.left = left;
+      
+      const randomDuration = (Math.random() * 7 + 8).toFixed(1);
+      star.style.animationDuration = `${randomDuration}s`;
+
+      star.innerHTML = `
+        <div class="star-icon" style="color: ${color};">❤</div>
+        <div class="star-label">${name}</div>
+      `;
+
+      star.addEventListener('click', () => {
+        alert(`จาก: ${name}\nข้อความ: "${message}"`);
+      });
+
+      sky.appendChild(star);
+    }
+
+    // โหลดข้อมูลทั้งหมดจาก Firebase มาแสดงบนฟ้า
+    async function loadWishesFromFirebase() {
+      try {
+        const querySnapshot = await getDocs(collection(db, "wishes"));
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          createStarElement(data.name, data.message, data.color, data.top, data.left);
+        });
+      } catch (error) {
+        console.error("Error loading wishes: ", error);
+      }
+    }
+
+    // โหลดข้อมูลลงในตาราง (Admin View)
+    async function loadWishesToTable() {
+      wishesTableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; padding: 20px;">กำลังโหลดข้อมูล...</td></tr>`;
+      try {
+        const querySnapshot = await getDocs(collection(db, "wishes"));
+        wishesTableBody.innerHTML = "";
+        
+        if (querySnapshot.empty) {
+          wishesTableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; padding: 20px; color: #aaa;">ยังไม่มีคำอวยพร</td></tr>`;
+          return;
+        }
+
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td style="font-weight: bold; color: #e0f2fe;">${data.name}</td>
+            <td>${data.message}</td>
+            <td style="text-align: center;">
+              <span style="display: inline-block; width: 16px; height: 16px; background-color: ${data.color}; border-radius: 50%; vertical-align: middle;"></span>
+            </td>
+          `;
+          wishesTableBody.appendChild(row);
+        });
+      } catch (error) {
+        console.error("Error loading table: ", error);
+        wishesTableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: #f87171; padding: 20px;">เกิดข้อผิดพลาดในการโหลดข้อมูล</td></tr>`;
+      }
+    }
+
+    // เลือกสีหัวใจ
+    colorBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        colorBtns.forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedColor = btn.dataset.color;
+      });
+    });
+
+    // ควบคุมการเปิด-ปิด Modal ส่งจดหมาย
+    openModalBtn.addEventListener('click', () => modalOverlay.classList.add('active'));
+    closeModalBtn.addEventListener('click', () => modalOverlay.classList.remove('active'));
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) modalOverlay.classList.remove('active');
+    });
+
+    // ควบคุมการเปิด-ปิด Modal ตารางคำอวยพร
+    openTableBtn.addEventListener('click', async () => {
+      tableModalOverlay.classList.add('active');
+      await loadWishesToTable();
+    });
+    closeTableModalBtn.addEventListener('click', () => tableModalOverlay.classList.remove('active'));
+    tableModalOverlay.addEventListener('click', (e) => {
+      if (e.target === tableModalOverlay) tableModalOverlay.classList.remove('active');
+    });
+
+    // ส่งข้อมูลบันทึกลง Firebase
+    wishForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      const message = document.getElementById('message').value;
+
+      const randomTop = Math.floor(Math.random() * 60 + 20) + '%';
+      const randomLeft = Math.floor(Math.random() * 80 + 10) + '%';
+
+      try {
+        await addDoc(collection(db, "wishes"), {
+          name: username,
+          message: message,
+          color: selectedColor,
+          top: randomTop,
+          left: randomLeft,
+          createdAt: serverTimestamp()
+        });
+
+        createStarElement(username, message, selectedColor, randomTop, randomLeft);
+
+        wishForm.reset();
+        modalOverlay.classList.remove('active');
+        alert('ส่งคำอวยพรเรียบร้อยแล้วค่า! 🩵');
+      } catch (error) {
+        console.error("Error adding document: ", error);
+        alert('เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่อีกครั้ง');
+      }
+    });
+
+    // เริ่มต้นโหลดข้อมูลเมื่อเปิดหน้าเว็บ
+    loadWishesFromFirebase();
+  </script>
+</body>
+</html>
